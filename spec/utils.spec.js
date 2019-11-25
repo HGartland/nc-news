@@ -50,4 +50,38 @@ describe("makeRefObj", () => {
   });
 });
 
-describe("formatComments", () => {});
+describe("formatComments", () => {
+  const input = [
+    {
+      body: "I hate streaming noses",
+      belongs_to: "Living in the shadow of a great man",
+      created_by: "icellusedkars",
+      votes: 0,
+      created_at: 1385210163389
+    },
+    {
+      body: "I hate streaming eyes even more",
+      belongs_to: "Living in the shadow of a great man",
+      created_by: "bananaman",
+      votes: 0,
+      created_at: 1353674163389
+    },
+    {
+      body: "Lobster pot",
+      belongs_to: "Living in the shadow of a great man",
+      created_by: "wombat_pete",
+      votes: 0,
+      created_at: 1322138163389
+    }
+  ];
+  it("when passed an array returns new array", () => {
+    const input2 = [];
+    expect(formatComments(input2, { a: "b" })).to.not.equal(input);
+    expect(formatComments(input2, { a: "b" })).to.eql([]);
+  });
+  it("changes created_by key in objects to author", () => {
+    const output = formatComments(input);
+    expect(output[0].author).to.eql("icellusedkars");
+    expect(output[1].author).to.eql("bananaman");
+  });
+});

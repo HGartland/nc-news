@@ -24,4 +24,12 @@ exports.makeRefObj = list => {
   }, {});
 };
 
-exports.formatComments = (comments, articleRef) => {};
+exports.formatComments = (comments, articleRef) => {
+  // takes array of objects
+  // takes reference object
+  // returns new array of objects
+  // created_by key changed to author
+  // belongs_to key changed to article_id
+  // belongs_to value changed to article_id value
+  // created_at converted to JS date object
+};
