@@ -14,19 +14,19 @@ describe("formatDates", () => {
   });
   it("when given an array containing a single object converts the timestamp to js date object without affecting other properties", () => {
     const input = [{ created_at: 1511354163389, name: "barry" }];
-    expect(formatDates(input)).to.eql([
-      { created_at: "2017-11-22 12:36:03", name: "barry" }
-    ]);
+    const output = formatDates(input);
+    expect(output[0].created_at instanceof Date).true;
+    expect(output[0].created_at.getFullYear()).to.eql(2017);
+    expect(output[0].created_at.getMonth()).to.eql(10);
   });
   it("when given an array containing multiple objects converts the timestamps to js date object", () => {
     const input = [
       { created_at: 1511354163389 },
       { created_at: 1512355163389 }
     ];
-    expect(formatDates(input)).to.eql([
-      { created_at: "2017-11-22 12:36:03" },
-      { created_at: "2017-12-04 02:39:23" }
-    ]);
+    const output = formatDates(input);
+    expect(output[0].created_at instanceof Date).true;
+    expect(output[1].created_at.getFullYear()).to.eql(2017);
   });
 });
 
