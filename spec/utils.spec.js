@@ -93,4 +93,9 @@ describe("formatComments", () => {
     expect(output[2].article_id).to.eql(3);
     expect(output[0].hasOwnProperty("belongs_to")).to.be.false;
   });
+  it("changes created_at to JS date object", () => {
+    expect(input[0].created_at instanceof Date).to.be.false;
+    const output = formatComments(input, {});
+    expect(output[0].created_at instanceof Date).to.be.true;
+  });
 });
