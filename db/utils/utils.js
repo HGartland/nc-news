@@ -29,6 +29,8 @@ exports.formatComments = (comments, articleRef) => {
     const newComment = { ...comment };
     newComment.author = newComment.created_by;
     delete newComment.created_by;
+    newComment.article_id = articleRef[comment.belongs_to];
+    delete newComment.belongs_to;
     return newComment;
   });
   // takes array of objects
