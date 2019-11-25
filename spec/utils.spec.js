@@ -1,12 +1,19 @@
-const { expect } = require('chai');
+const { expect } = require("chai");
 const {
   formatDates,
   makeRefObj,
-  formatComments,
-} = require('../db/utils/utils');
+  formatComments
+} = require("../db/utils/utils");
 
-describe('formatDates', () => {});
+describe("formatDates", () => {
+  it("when given an empty array returns a new empty array", () => {
+    const input = [];
+    const expected = [];
+    expect(formatDates(input)).to.eql(expected);
+    expect(formatDates(input)).to.not.equal(input);
+  });
+});
 
-describe('makeRefObj', () => {});
+describe("makeRefObj", () => {});
 
-describe('formatComments', () => {});
+describe("formatComments", () => {});
