@@ -25,6 +25,12 @@ exports.makeRefObj = list => {
 };
 
 exports.formatComments = (comments, articleRef) => {
+  return comments.map(comment => {
+    const newComment = { ...comment };
+    newComment.author = newComment.created_by;
+    delete newComment.created_by;
+    return newComment;
+  });
   // takes array of objects
   // takes reference object
   // returns new array of objects

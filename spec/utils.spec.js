@@ -54,21 +54,21 @@ describe("formatComments", () => {
   const input = [
     {
       body: "I hate streaming noses",
-      belongs_to: "Living in the shadow of a great man",
+      belongs_to: "test1",
       created_by: "icellusedkars",
       votes: 0,
       created_at: 1385210163389
     },
     {
       body: "I hate streaming eyes even more",
-      belongs_to: "Living in the shadow of a great man",
+      belongs_to: "test2",
       created_by: "bananaman",
       votes: 0,
       created_at: 1353674163389
     },
     {
       body: "Lobster pot",
-      belongs_to: "Living in the shadow of a great man",
+      belongs_to: "test3",
       created_by: "wombat_pete",
       votes: 0,
       created_at: 1322138163389
@@ -80,8 +80,17 @@ describe("formatComments", () => {
     expect(formatComments(input2, { a: "b" })).to.eql([]);
   });
   it("changes created_by key in objects to author", () => {
-    const output = formatComments(input);
+    const output = formatComments(input, {});
     expect(output[0].author).to.eql("icellusedkars");
     expect(output[1].author).to.eql("bananaman");
+    expect(output[0].hasOwnProperty("created_by")).false;
+  });
+  it("changes belongs_to key pairs to article_ids from reference object", () => {
+    const refObj = { test1: 1, test2: 2, test3: 3 };
+    const output = formatComments(input, refObj);
+    expect(output[0].article_id).to.eql(1);
+    expect(output[1].article_id).to.eql(2);
+    expect(output[2].article_id).to.eql(3);
+    expect(output[0].hasOwnProperty("belongs_to")).to.be.false;
   });
 });
