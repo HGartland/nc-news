@@ -7,6 +7,10 @@ exports.up = function(knex) {
       articlesTable.string("body").notNullable();
       articlesTable.integer("votes").defaultTo(0);
       articlesTable
+        .string("topic")
+        .references("slug")
+        .inTable("topics");
+      articlesTable
         .string("author")
         .references("username")
         .inTable("users");
