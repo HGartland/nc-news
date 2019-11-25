@@ -9,10 +9,10 @@ exports.formatDates = list => {
   return list.map(object => {
     const date = new Date(object.created_at);
     newObj = { ...object };
-    newObj.created_at = date
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
+    newObj.created_at = date;
+    // .toISOString()
+    // .slice(0, 19)
+    // .replace("T", " ");
     return newObj;
   });
 };
@@ -31,6 +31,7 @@ exports.formatComments = (comments, articleRef) => {
     delete newComment.created_by;
     newComment.article_id = articleRef[comment.belongs_to];
     delete newComment.belongs_to;
+    newComment.created_at = new Date(newComment.created_at);
     return newComment;
   });
   // takes array of objects
