@@ -23,6 +23,6 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   console.log("removing topics and users tables...");
   return knex.schema.dropTable("topics").then(() => {
-    return knex.schame.dropTable("users");
+    return knex.schema.dropTable("users");
   });
 };
