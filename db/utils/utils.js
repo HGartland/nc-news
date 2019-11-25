@@ -17,6 +17,12 @@ exports.formatDates = list => {
   });
 };
 
-exports.makeRefObj = list => {};
+exports.makeRefObj = list => {
+  return {};
+  // take array
+  // return one object
+  // key of title
+  // val of id
+};
 
 exports.formatComments = (comments, articleRef) => {};
