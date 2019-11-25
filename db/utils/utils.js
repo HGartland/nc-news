@@ -18,11 +18,10 @@ exports.formatDates = list => {
 };
 
 exports.makeRefObj = list => {
-  return {};
-  // take array
-  // return one object
-  // key of title
-  // val of id
+  return list.reduce(function(refObj, commentObj) {
+    refObj[commentObj.title] = commentObj.article_id;
+    return refObj;
+  }, {});
 };
 
 exports.formatComments = (comments, articleRef) => {};

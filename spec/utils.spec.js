@@ -36,7 +36,7 @@ describe("makeRefObj", () => {
   });
   it("when passed an array returns an object with a key of each of the the objects titles and value of  article_id", () => {
     const input = [{ title: "bungling", article_id: 17 }];
-    const expected = [{ bungling: 17 }];
+    const expected = { bungling: 17 };
     expect(makeRefObj(input)).to.eql(expected);
   });
   it("when passed multiple objects in array the ref object contains key pairs for all titles and ids", () => {
@@ -45,7 +45,7 @@ describe("makeRefObj", () => {
       { title: "business", article_id: 80 },
       { title: "breakfast", article_id: 2 }
     ];
-    const expected = [{ banjo: 25, business: 80, breakfast: 2 }];
+    const expected = { banjo: 25, business: 80, breakfast: 2 };
     expect(makeRefObj(input)).to.eql(expected);
   });
 });
