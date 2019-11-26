@@ -11,3 +11,10 @@ exports.fetchArticle = ({ article_id }) => {
         : article;
     });
 };
+
+exports.updateArticle = ({ article_id }, updated_article) => {
+  return connection("articles")
+    .where("article_id", article_id)
+    .update(updated_article)
+    .returning("*");
+};

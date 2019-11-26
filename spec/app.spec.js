@@ -84,8 +84,8 @@ describe("/api", () => {
             .patch("/api/articles/1")
             .expect(200)
             .send({ body: "I hate mondays" })
-            .then(({ body: { body } }) => {
-              expect(body).to.eql("I hate mondays");
+            .then(({ body: { updated_article } }) => {
+              expect(updated_article.body).to.eql("I hate mondays");
             });
         });
       });
