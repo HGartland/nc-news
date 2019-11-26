@@ -4,11 +4,9 @@ const app = require("../app");
 const connection = require("../db/connection");
 const { expect } = require("chai");
 
-after(() => {
-  connection.destroy();
-});
-
 describe("/api", () => {
+  beforeEach(() => connection.seed.run());
+  after(() => connection.destroy());
   describe("/topics", () => {
     describe("GET", () => {
       it("status:200 with array of all rows in topics table", () => {
