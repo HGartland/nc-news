@@ -34,4 +34,14 @@ describe("/api", () => {
       });
     });
   });
+  describe("invalid url", () => {
+    it("status:404 with msg:invalid url", () => {
+      return request(app)
+        .get("/bananas")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).to.eql("invalid url");
+        });
+    });
+  });
 });
