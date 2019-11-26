@@ -12,7 +12,11 @@ describe("/api", () => {
       it("status:200 with array of all rows in topics table", () => {
         return request(app)
           .get("/api/topics")
-          .expect(200);
+          .expect(200)
+          .then(({ body: { topics } }) => {
+            expect(topics.length).to.eql(3);
+            expect(topics[0]).to.include.keys(["description", "slug"]);
+          });
       });
     });
   });
