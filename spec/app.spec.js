@@ -97,6 +97,15 @@ describe("/api", () => {
               expect(msg).to.eql("data not found");
             });
         });
+        it("status: 400 bad request for invalid id", () => {
+          return request(app)
+            .patch("/api/articles/banana")
+            .expect(400)
+            .send({ body: "I love mondays" })
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("bad request");
+            });
+        });
       });
     });
   });
