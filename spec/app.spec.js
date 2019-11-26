@@ -78,6 +78,17 @@ describe("/api", () => {
             });
         });
       });
+      describe("PATCH", () => {
+        it("status: 200 with patched article object", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .expect(200)
+            .send({ body: "I hate mondays" })
+            .then(({ body: { body } }) => {
+              expect(body).to.eql("I hate mondays");
+            });
+        });
+      });
     });
   });
   describe("invalid url", () => {
