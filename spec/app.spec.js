@@ -31,6 +31,14 @@ describe("/api", () => {
               expect(user).to.include.keys(["avatar_url", "name", "username"]);
             });
         });
+        it("status: 404 msg: data not found for username not in db", () => {
+          return request(app)
+            .get("/api/users/bananas")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("data not found");
+            });
+        });
       });
     });
   });
