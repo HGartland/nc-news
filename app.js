@@ -1,12 +1,13 @@
 const express = require("express");
 const apiRouter = require("./routers/api-router");
 const app = express();
-const { handle500s } = require("./errors");
+const { handle500s, handleCustom } = require("./errors");
 
 // ROUTES
 app.use("/api", apiRouter);
 
 // ERROR CATCHERS
+app.use(handleCustom);
 app.use(handle500s);
 
 // INVALID URL
