@@ -10,6 +10,6 @@ exports.handleCustom = (err, req, res, next) => {
 };
 
 exports.handle500s = (err, req, res, next) => {
-  console.log(err);
+  console.log(err, "<----- ERROR HERE");
   res.status(500).send({ msg: "server error" });
 };

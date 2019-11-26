@@ -106,6 +106,14 @@ describe("/api", () => {
               expect(msg).to.eql("bad request");
             });
         });
+        it("status: 400 bad request for updated reference which does not match required table data", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .expect(500)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("bad request");
+            });
+        });
       });
     });
   });
