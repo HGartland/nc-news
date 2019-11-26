@@ -42,8 +42,30 @@ describe("/api", () => {
       });
     });
   });
+  describe("/articles", () => {
+    describe("/:article_id", () => {
+      describe("GET", () => {
+        it("status: 200 & article object with valid article id", () => {
+          return request(app)
+            .get("/api/articles/4")
+            .expect(200)
+            .then(({ body: { article } }) => {
+              expect(article).to.include.keys([
+                "article_id",
+                "title",
+                "body",
+                "votes",
+                "topic",
+                "author",
+                "created_at"
+              ]);
+            });
+        });
+      });
+    });
+  });
   describe("invalid url", () => {
-    it("status:404 with msg:invalid url", () => {
+    it("status: 404 with msg: invalid url", () => {
       return request(app)
         .get("/bananas")
         .expect(404)
