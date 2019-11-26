@@ -88,6 +88,15 @@ describe("/api", () => {
               expect(updated_article.body).to.eql("I hate mondays");
             });
         });
+        it("status: 404 data not found for non matching id", () => {
+          return request(app)
+            .patch("/api/articles/420")
+            .expect(404)
+            .send({ body: "I love mondays" })
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("data not found");
+            });
+        });
       });
     });
   });

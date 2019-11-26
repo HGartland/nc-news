@@ -16,5 +16,10 @@ exports.updateArticle = ({ article_id }, updated_article) => {
   return connection("articles")
     .where("article_id", article_id)
     .update(updated_article)
-    .returning("*");
+    .returning("*")
+    .then(article => {
+      return article.length === 0
+        ? Promise.reject({ code: 404, msg: "data not found" })
+        : article;
+    });
 };
