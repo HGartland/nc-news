@@ -69,6 +69,14 @@ describe("/api", () => {
               expect(msg).to.eql("data not found");
             });
         });
+        it("status 400 bad request for non valid article_id", () => {
+          return request(app)
+            .get("/api/articles/banana")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("bad request");
+            });
+        });
       });
     });
   });
