@@ -20,4 +20,18 @@ describe("/api", () => {
       });
     });
   });
+  describe("/users", () => {
+    describe("/:username", () => {
+      describe("GET", () => {
+        it("status:200 with single row matching users.username", () => {
+          return request(app)
+            .get("/api/users/rogersop")
+            .expect(200)
+            .then(({ body: { user } }) => {
+              expect(user).to.include.keys(["avatar_url", "name", "username"]);
+            });
+        });
+      });
+    });
+  });
 });
