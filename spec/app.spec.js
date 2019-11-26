@@ -61,6 +61,14 @@ describe("/api", () => {
               ]);
             });
         });
+        it("status 404 data not found for article id not in db", () => {
+          return request(app)
+            .get("/api/articles/420")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("data not found");
+            });
+        });
       });
     });
   });
