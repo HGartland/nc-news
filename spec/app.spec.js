@@ -9,6 +9,20 @@ after(() => connection.destroy());
 
 describe("app", () => {
   describe("/api", () => {
+    describe.only("GET", () => {
+      it("status:200 with endpoints.json", () => {
+        return request(app)
+          .get("/api")
+          .expect(200)
+          .then(({ body: { endpoints } }) => {
+            expect(endpoints).keys([
+              "GET /api",
+              "GET /api/topics",
+              "GET /api/articles"
+            ]);
+          });
+      });
+    });
     describe("/topics", () => {
       describe("GET", () => {
         it("status:200 with array of all rows in topics table", () => {
@@ -255,7 +269,7 @@ describe("app", () => {
               });
           });
         });
-        describe.only("DELETE", () => {
+        describe("DELETE", () => {
           it("status: 204 msg: successfully deleted", () => {
             return request(app)
               .del("/api/comments/1")
