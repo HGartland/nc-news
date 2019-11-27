@@ -17,6 +17,7 @@ exports.postComment = (req, res, next) => {
     body: req.body.body,
     article_id: req.params.article_id
   };
+  console.log(newComment);
   insertComment(newComment)
     .then(comment => {
       res.status(201).send({ comment: comment[0] });

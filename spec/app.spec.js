@@ -144,7 +144,7 @@ describe("/api", () => {
               });
           });
         });
-        describe("POST", () => {
+        describe.only("POST", () => {
           it("status:201 new comment posted on success ", () => {
             return request(app)
               .post("/api/articles/2/comments")
@@ -157,6 +157,24 @@ describe("/api", () => {
                   "article_id",
                   "comment_id"
                 ]);
+              });
+          });
+          it("status: 400 if given post request with missing column", () => {
+            return request(app)
+              .post("/api/articles/2/comments")
+              .send({ body: "This is fine" })
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal("bad request");
+              });
+          });
+          it("status: 422 for post request with reference key not matching info in db ", () => {
+            return request(app)
+              .post("/api/articles/2/comments")
+              .send({ username: "banandrew", body: "This is fine" })
+              .expect(422)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal("unprocessable entry");
               });
           });
         });
