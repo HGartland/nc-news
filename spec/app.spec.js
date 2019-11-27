@@ -9,7 +9,7 @@ after(() => connection.destroy());
 
 describe("app", () => {
   describe("/api", () => {
-    describe.only("GET", () => {
+    describe("GET", () => {
       it("status:200 with endpoints.json", () => {
         return request(app)
           .get("/api")
@@ -154,7 +154,7 @@ describe("app", () => {
                 expect(msg).to.eql("bad request");
               });
           });
-          it("status: 422 on added date not matching reference", () => {
+          it("status: 422 on added data not matching reference", () => {
             return request(app)
               .patch("/api/articles/1")
               .send({ author: 221133 })
