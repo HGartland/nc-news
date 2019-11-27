@@ -144,6 +144,17 @@ describe("/api", () => {
               });
           });
         });
+        describe("POST", () => {
+          it("status:201 new comment posted on success ", () => {
+            return request(app)
+              .post("/api/articles/2/comments")
+              .expect(201)
+              .send({ username: "rogersop", body: "This is fine" })
+              .then(({ body: { comment } }) => {
+                expect(comment).to.include.keys(["username", "body"]);
+              });
+          });
+        });
       });
     });
   });
