@@ -1,5 +1,17 @@
 const connection = require("../db/connection");
 
+exports.checkArticleExists = article_id => {
+  return connection
+    .select("*")
+    .from("articles")
+    .where(article_id)
+    .then(articles => {
+      return !articles.length
+        ? Promise.reject({ code: 404, msg: "data not found" })
+        : articles;
+    });
+};
+
 exports.fetchArticle = ({ article_id }) => {
   return connection
     .select("articles.*")

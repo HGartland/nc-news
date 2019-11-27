@@ -186,13 +186,18 @@ describe("app", () => {
                   ]);
                 });
             });
-            it("status: 404 data not found for no matching comments", () => {
+            it("status: 404 data not found for no matching article", () => {
               return request(app)
-                .get("/api/articles/7/comments")
+                .get("/api/articles/13/comments")
                 .expect(404)
                 .then(({ body: { msg } }) => {
                   expect(msg).to.eql("data not found");
                 });
+            });
+            it("status: 200 on no comments found but article exists", () => {
+              return request(app)
+                .get("/api/articles/7/comments")
+                .expect(200);
             });
           });
           describe("POST", () => {

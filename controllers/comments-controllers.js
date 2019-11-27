@@ -5,9 +5,15 @@ const {
   killComment
 } = require("../models/comments-models");
 
+const { checkArticleExists } = require("../models/articles-models");
+
 exports.getCommentsByArticle = (req, res, next) => {
-  fetchCommentsByArticle(req.params)
-    .then(comments => {
+  return Promise.all([
+    fetchCommentsByArticle(req.params),
+    checkArticleExists(req.params)
+  ])
+    .then(([comments, article]) => {
+      console.log(comments);
       res.status(200).send({ comments });
     })
     .catch(next);
