@@ -135,6 +135,14 @@ describe("/api", () => {
                 expect(articles.length).to.eql(13);
               });
           });
+          it("status: 404 data not found for no matching comments", () => {
+            return request(app)
+              .get("/api/articles/7/comments")
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("data not found");
+              });
+          });
         });
       });
     });
