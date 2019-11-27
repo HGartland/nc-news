@@ -29,3 +29,14 @@ exports.updateComment = ({ comment_id }, incVotes) => {
         : comment;
     });
 };
+
+exports.killComment = ({ comment_id }) => {
+  return connection("comments")
+    .where({ comment_id })
+    .del()
+    .then(deleted => {
+      return deleted === 0
+        ? Promise.reject({ code: 404, msg: "data not found" })
+        : deleted;
+    });
+};

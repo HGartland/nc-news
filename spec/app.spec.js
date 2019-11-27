@@ -259,9 +259,14 @@ describe("app", () => {
           it("status: 204 msg: successfully deleted", () => {
             return request(app)
               .del("/api/comments/1")
-              .expect(204)
+              .expect(204);
+          });
+          it("status:404 with non matching id", () => {
+            return request(app)
+              .delete("/api/comments/100")
+              .expect(404)
               .then(({ body: { msg } }) => {
-                expect(msg).to.eql("successfully deleted comment");
+                expect(msg).to.eql("data not found");
               });
           });
         });
