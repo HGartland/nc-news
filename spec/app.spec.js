@@ -106,10 +106,11 @@ describe("/api", () => {
               expect(msg).to.eql("bad request");
             });
         });
-        it("status: 400 bad request for updated reference which does not match required table data", () => {
+        it("status: 400 bad request for updated article with wrong data type", () => {
           return request(app)
             .patch("/api/articles/1")
-            .expect(500)
+            .send({ author: 221133 })
+            .expect(400)
             .then(({ body: { msg } }) => {
               expect(msg).to.eql("bad request");
             });
