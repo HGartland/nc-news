@@ -151,7 +151,12 @@ describe("/api", () => {
               .expect(201)
               .send({ username: "rogersop", body: "This is fine" })
               .then(({ body: { comment } }) => {
-                expect(comment).to.include.keys(["username", "body"]);
+                expect(comment).to.include.keys([
+                  "author",
+                  "body",
+                  "article_id",
+                  "comment_id"
+                ]);
               });
           });
         });

@@ -11,3 +11,9 @@ exports.fetchCommentsByArticle = ({ article_id }) => {
         : comments;
     });
 };
+
+exports.insertComment = newComment => {
+  return connection("comments")
+    .insert(newComment)
+    .returning("*");
+};
