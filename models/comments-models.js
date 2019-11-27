@@ -21,7 +21,7 @@ exports.insertComment = newComment => {
 exports.updateComment = ({ comment_id }, incVotes) => {
   return connection("comments")
     .where("comment_id", comment_id)
-    .increment("votes", incVotes)
+    .increment(incVotes)
     .returning("*")
     .then(comment => {
       return comment.length === 0

@@ -208,7 +208,7 @@ describe("app", () => {
     });
     describe("/comments", () => {
       describe("/:comment_id", () => {
-        describe.only("PATCH", () => {
+        describe("PATCH", () => {
           it("status:200 updates votes and sends updated comment", () => {
             return request(app)
               .patch("/api/comments/1")
@@ -222,6 +222,7 @@ describe("app", () => {
             return request(app)
               .patch("/api/comments/1000")
               .expect(404)
+              .send({ inc_votes: 4 })
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("data not found");
               });
@@ -230,8 +231,37 @@ describe("app", () => {
             return request(app)
               .patch("/api/comments/bananas")
               .expect(400)
+              .send({ inc_votes: 4 })
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("bad request");
+              });
+          });
+          it("status 400 for invalid vote", () => {
+            return request(app)
+              .patch("/api/comments/1")
+              .expect(400)
+              .send({ inc_votes: "four" })
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("bad request");
+              });
+          });
+          it("status: 400 for missing column", () => {
+            return request(app)
+              .patch("/api/comments/1")
+              .expect(400)
+              .send({ votes: 4 })
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("bad request");
+              });
+          });
+        });
+        describe.only("DELETE", () => {
+          it("status: 204 msg: successfully deleted", () => {
+            return request(app)
+              .del("/api/comments/1")
+              .expect(204)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("successfully deleted comment");
               });
           });
         });

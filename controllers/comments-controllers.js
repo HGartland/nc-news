@@ -28,7 +28,7 @@ exports.postComment = (req, res, next) => {
 
 exports.patchComment = (req, res, next) => {
   const incVotes = req.body.inc_votes;
-  updateComment(req.params, incVotes)
+  updateComment(req.params, { votes: incVotes })
     .then(comment => {
       res.status(200).send({ comment: comment[0] });
     })
