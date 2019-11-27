@@ -218,6 +218,22 @@ describe("app", () => {
                 expect(comment.votes).to.eql(20);
               });
           });
+          it("status: 404 for non matching comment ID", () => {
+            return request(app)
+              .patch("/api/comments/1000")
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("data not found");
+              });
+          });
+          it("status: 400 for invalid comment ID", () => {
+            return request(app)
+              .patch("/api/comments/bananas")
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("bad request");
+              });
+          });
         });
       });
     });

@@ -22,5 +22,10 @@ exports.updateComment = ({ comment_id }, incVotes) => {
   return connection("comments")
     .where("comment_id", comment_id)
     .increment("votes", incVotes)
-    .returning("*");
+    .returning("*")
+    .then(comment => {
+      return comment.length === 0
+        ? Promise.reject({ code: 404, msg: "data not found" })
+        : comment;
+    });
 };
