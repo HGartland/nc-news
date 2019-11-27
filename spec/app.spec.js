@@ -109,10 +109,19 @@ describe("/api", () => {
         it("status: 400 bad request for updated article with wrong data type", () => {
           return request(app)
             .patch("/api/articles/1")
-            .send({ author: 221133 })
+            .send({ vote: "200" })
             .expect(400)
             .then(({ body: { msg } }) => {
               expect(msg).to.eql("bad request");
+            });
+        });
+        it("status: 422 on added date not matching reference", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ author: 221133 })
+            .expect(422)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("unprocessable entry");
             });
         });
       });
