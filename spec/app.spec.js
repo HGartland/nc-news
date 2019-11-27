@@ -2,7 +2,10 @@ process.env.NODE_ENV = "test";
 const request = require("supertest");
 const app = require("../app");
 const connection = require("../db/connection");
-const { expect } = require("chai");
+const chai = require("chai");
+const expect = chai.expect;
+const chaiSorted = require("chai-sorted");
+chai.use(chaiSorted);
 
 beforeEach(() => connection.seed.run());
 after(() => connection.destroy());
@@ -83,7 +86,7 @@ describe("app", () => {
         });
       });
       describe("/:article_id", () => {
-        describe.only("GET", () => {
+        describe("GET", () => {
           it("status: 200 & article object with valid article id", () => {
             return request(app)
               .get("/api/articles/1")
@@ -167,13 +170,20 @@ describe("app", () => {
           });
         });
         describe("/comments", () => {
-          describe("GET", () => {
+          describe.only("GET", () => {
             it("status:200 with array length equal to comments for article", () => {
               return request(app)
                 .get("/api/articles/1/comments")
                 .expect(200)
-                .then(({ body: { articles } }) => {
-                  expect(articles.length).to.eql(13);
+                .then(({ body: { comments } }) => {
+                  expect(comments.length).to.eql(13);
+                  expect(comments[0]).keys([
+                    "comment_id",
+                    "votes",
+                    "created_at",
+                    "author",
+                    "body"
+                  ]);
                 });
             });
             it("status: 404 data not found for no matching comments", () => {

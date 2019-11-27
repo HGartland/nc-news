@@ -7,8 +7,8 @@ const {
 
 exports.getCommentsByArticle = (req, res, next) => {
   fetchCommentsByArticle(req.params)
-    .then(articles => {
-      res.status(200).send({ articles });
+    .then(comments => {
+      res.status(200).send({ comments });
     })
     .catch(next);
 };
