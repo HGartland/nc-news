@@ -125,6 +125,18 @@ describe("/api", () => {
             });
         });
       });
+      describe("/comments", () => {
+        describe("GET", () => {
+          it("status:200 with array length equal to comments for article", () => {
+            return request(app)
+              .get("/api/articles/1/comments")
+              .expect(200)
+              .then(({ body: { articles } }) => {
+                expect(articles.length).to.eql(13);
+              });
+          });
+        });
+      });
     });
   });
   describe("invalid url", () => {
