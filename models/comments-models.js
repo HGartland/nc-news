@@ -17,3 +17,10 @@ exports.insertComment = newComment => {
     .insert(newComment)
     .returning("*");
 };
+
+exports.updateComment = ({ comment_id }, incVotes) => {
+  return connection("comments")
+    .where("comment_id", comment_id)
+    .increment("votes", incVotes)
+    .returning("*");
+};
