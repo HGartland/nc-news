@@ -43,6 +43,25 @@ describe("/api", () => {
     });
   });
   describe("/articles", () => {
+    describe.only("GET", () => {
+      it("status:200 return array of all articles", () => {
+        return request(app)
+          .get("/api/articles")
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles[0]).keys([
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at"
+            ]);
+            expect(articles.length).to.eql(12);
+          });
+      });
+    });
     describe("/:article_id", () => {
       describe("GET", () => {
         it("status: 200 & article object with valid article id", () => {
@@ -144,7 +163,7 @@ describe("/api", () => {
               });
           });
         });
-        describe.only("POST", () => {
+        describe("POST", () => {
           it("status:201 new comment posted on success ", () => {
             return request(app)
               .post("/api/articles/2/comments")

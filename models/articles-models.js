@@ -23,3 +23,7 @@ exports.updateArticle = ({ article_id }, updated_article) => {
         : article;
     });
 };
+
+exports.fetchAllArticles = () => {
+  return connection.select("*").from("articles");
+};
