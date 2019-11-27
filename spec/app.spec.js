@@ -83,12 +83,13 @@ describe("app", () => {
         });
       });
       describe("/:article_id", () => {
-        describe("GET", () => {
+        describe.only("GET", () => {
           it("status: 200 & article object with valid article id", () => {
             return request(app)
-              .get("/api/articles/4")
+              .get("/api/articles/1")
               .expect(200)
               .then(({ body: { article } }) => {
+                console.log(article);
                 expect(article).to.include.keys([
                   "article_id",
                   "title",
@@ -96,7 +97,8 @@ describe("app", () => {
                   "votes",
                   "topic",
                   "author",
-                  "created_at"
+                  "created_at",
+                  "comments_count"
                 ]);
               });
           });

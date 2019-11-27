@@ -2,9 +2,12 @@ const connection = require("../db/connection");
 
 exports.fetchArticle = ({ article_id }) => {
   return connection
-    .select("*")
+    .select("articles.*")
+    .count("comment_id AS comments_count")
     .from("articles")
-    .where("article_id", article_id)
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .where("articles.article_id", article_id)
+    .groupBy("articles.article_id")
     .then(article => {
       return article.length === 0
         ? Promise.reject({ code: 404, msg: "data not found" })
