@@ -145,7 +145,7 @@ describe("app", () => {
           return Promise.all(methodPromises);
         });
       });
-      describe.only("/:article_id", () => {
+      describe("/:article_id", () => {
         describe("GET", () => {
           it("status: 200 & article object with valid article id", () => {
             return request(app)
@@ -229,7 +229,7 @@ describe("app", () => {
           });
         });
         describe("INVALID METHODS", () => {
-          it("status:405 on patch, put, delete", () => {
+          it("status:405 on put, post", () => {
             const invalidMethods = ["put", "post"];
             const methodPromises = invalidMethods.map(method => {
               return request(app)
@@ -349,7 +349,21 @@ describe("app", () => {
       });
     });
     describe("/comments", () => {
-      describe("/:comment_id", () => {
+      describe("INVALID METHODS", () => {
+        it("status:405 on all methods", () => {
+          const invalidMethods = ["patch", "put", "delete", "get", "post"];
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/comments")
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal("method not allowed");
+              });
+          });
+          return Promise.all(methodPromises);
+        });
+      });
+      describe.only("/:comment_id", () => {
         describe("PATCH", () => {
           it("status:200 updates votes and sends updated comment", () => {
             return request(app)
@@ -410,6 +424,20 @@ describe("app", () => {
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("data not found");
               });
+          });
+        });
+        describe("INVALID METHODS", () => {
+          it("status:405 on post, put, get", () => {
+            const invalidMethods = ["put", "post", "get"];
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]("/api/comments/1")
+                .expect(405)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal("method not allowed");
+                });
+            });
+            return Promise.all(methodPromises);
           });
         });
       });
