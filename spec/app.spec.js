@@ -145,7 +145,7 @@ describe("app", () => {
           return Promise.all(methodPromises);
         });
       });
-      describe("/:article_id", () => {
+      describe.only("/:article_id", () => {
         describe("GET", () => {
           it("status: 200 & article object with valid article id", () => {
             return request(app)
@@ -226,6 +226,20 @@ describe("app", () => {
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("unprocessable entry");
               });
+          });
+        });
+        describe("INVALID METHODS", () => {
+          it("status:405 on patch, put, delete", () => {
+            const invalidMethods = ["put", "post"];
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]("/api/articles/1")
+                .expect(405)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal("method not allowed");
+                });
+            });
+            return Promise.all(methodPromises);
           });
         });
         describe("/comments", () => {
@@ -315,6 +329,20 @@ describe("app", () => {
                 .then(({ body: { msg } }) => {
                   expect(msg).to.equal("unprocessable entry");
                 });
+            });
+          });
+          describe("INVALID METHODS", () => {
+            it("status:405 on patch, put, delete", () => {
+              const invalidMethods = ["patch", "put", "delete"];
+              const methodPromises = invalidMethods.map(method => {
+                return request(app)
+                  [method]("/api/articles/1/comments")
+                  .expect(405)
+                  .then(({ body: { msg } }) => {
+                    expect(msg).to.equal("method not allowed");
+                  });
+              });
+              return Promise.all(methodPromises);
             });
           });
         });
