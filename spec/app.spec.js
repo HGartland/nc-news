@@ -77,6 +77,34 @@ describe("app", () => {
               });
           });
         });
+        describe("INVALID METHODS", () => {
+          it("status:405 on post, patch, put, delete", () => {
+            const invalidMethods = ["post", "patch", "put", "delete"];
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]("/api/users/rogersop")
+                .expect(405)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal("method not allowed");
+                });
+            });
+            return Promise.all(methodPromises);
+          });
+        });
+      });
+      describe("INVALID METHODS", () => {
+        it("status:405 on patch, put, delete", () => {
+          const invalidMethods = ["patch", "put", "delete"];
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/users")
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal("method not allowed");
+              });
+          });
+          return Promise.all(methodPromises);
+        });
       });
     });
     describe("/articles", () => {
@@ -363,7 +391,7 @@ describe("app", () => {
           return Promise.all(methodPromises);
         });
       });
-      describe.only("/:comment_id", () => {
+      describe("/:comment_id", () => {
         describe("PATCH", () => {
           it("status:200 updates votes and sends updated comment", () => {
             return request(app)
