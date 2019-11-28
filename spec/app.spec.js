@@ -210,20 +210,20 @@ describe("app", () => {
           });
         });
         describe("PATCH", () => {
-          it("status: 200 with patched article object", () => {
+          it("status: 200 with patched article votes", () => {
             return request(app)
               .patch("/api/articles/1")
               .expect(200)
-              .send({ body: "I hate mondays" })
+              .send({ inc_votes: 5 })
               .then(({ body: { updated_article } }) => {
-                expect(updated_article.body).to.eql("I hate mondays");
+                expect(updated_article.votes).to.eql(105);
               });
           });
           it("status: 404 data not found for non matching id", () => {
             return request(app)
               .patch("/api/articles/420")
               .expect(404)
-              .send({ body: "I love mondays" })
+              .send({ inc_votes: 5 })
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("data not found");
               });
@@ -232,7 +232,7 @@ describe("app", () => {
             return request(app)
               .patch("/api/articles/banana")
               .expect(400)
-              .send({ body: "I love mondays" })
+              .send({ inc_votes: 5 })
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("bad request");
               });
@@ -240,19 +240,10 @@ describe("app", () => {
           it("status: 400 bad request for updated article with wrong data type", () => {
             return request(app)
               .patch("/api/articles/1")
-              .send({ vote: "200" })
+              .send({ inc_votes: "five" })
               .expect(400)
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("bad request");
-              });
-          });
-          it("status: 422 on added data not matching reference", () => {
-            return request(app)
-              .patch("/api/articles/1")
-              .send({ author: 221133 })
-              .expect(422)
-              .then(({ body: { msg } }) => {
-                expect(msg).to.eql("unprocessable entry");
               });
           });
         });

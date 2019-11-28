@@ -13,7 +13,8 @@ exports.getArticle = (req, res, next) => {
 };
 
 exports.patchArticle = (req, res, next) => {
-  updateArticle(req.params, req.body)
+  const incVotes = req.body.inc_votes;
+  updateArticle(req.params, { votes: incVotes })
     .then(updated_article => {
       res.status(200).send({ updated_article: updated_article[0] });
     })

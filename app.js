@@ -1,13 +1,13 @@
 const express = require("express");
 const apiRouter = require("./routers/api-router");
 const app = express();
+app.use(express.json());
 const {
   handle500s,
   handleCustom,
   handle422s,
   handle400s
 } = require("./errors");
-app.use(express.json());
 // -----ROUTES
 app.use("/api", apiRouter);
 

@@ -27,10 +27,10 @@ exports.fetchArticle = ({ article_id }) => {
     });
 };
 
-exports.updateArticle = ({ article_id }, updated_article) => {
+exports.updateArticle = (article_id, votes) => {
   return connection("articles")
-    .where("article_id", article_id)
-    .update(updated_article)
+    .where(article_id)
+    .increment(votes)
     .returning("*")
     .then(article => {
       return article.length === 0
