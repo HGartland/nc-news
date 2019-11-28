@@ -26,7 +26,7 @@ describe("app", () => {
           });
       });
     });
-    describe("/topics", () => {
+    describe.only("/topics", () => {
       describe("GET", () => {
         it("status:200 with array of all rows in topics table", () => {
           return request(app)
@@ -36,6 +36,21 @@ describe("app", () => {
               expect(topics.length).to.eql(3);
               expect(topics[0]).to.include.keys(["description", "slug"]);
             });
+        });
+      });
+      describe("INVALID METHODS", () => {
+        it("status:405 on patch, put, delete", () => {
+          const invalidMethods = ["patch", "put", "delete"];
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/topics")
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal("method not allowed");
+              });
+          });
+          // methodPromises -> [ Promise { <pending> }, Promise { <pending> }, Promise { <pending> } ]
+          return Promise.all(methodPromises);
         });
       });
     });
@@ -66,7 +81,7 @@ describe("app", () => {
       });
     });
     describe("/articles", () => {
-      describe.only("GET", () => {
+      describe("GET", () => {
         it("status:200 return array of all articles with comment_count column added", () => {
           return request(app)
             .get("/api/articles")
@@ -124,7 +139,6 @@ describe("app", () => {
               .get("/api/articles/1")
               .expect(200)
               .then(({ body: { article } }) => {
-                console.log(article);
                 expect(article).to.include.keys([
                   "article_id",
                   "title",

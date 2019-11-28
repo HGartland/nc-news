@@ -20,3 +20,9 @@ exports.handle500s = (err, req, res, next) => {
   console.log(err, "<----- ERROR HERE");
   res.status(500).send({ msg: "server error" });
 };
+
+//=====INVALID METHODS======//
+
+exports.handle405s = (req, res, next) => {
+  res.status(405).send({ msg: "method not allowed" });
+};
