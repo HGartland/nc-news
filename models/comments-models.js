@@ -1,10 +1,17 @@
 const connection = require("../db/connection");
 
-exports.fetchCommentsByArticle = ({ article_id }, { sort_by, order }) => {
+exports.fetchCommentsByArticle = (
+  { article_id },
+  { sort_by, order, limit, p }
+) => {
   return connection
     .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
     .where("article_id", article_id)
+    .modify(query => {
+      if (limit) query.limit(limit);
+      if (limit && p) query.offset((p - 1) * limit);
+    })
     .orderBy(sort_by || "created_at", order || "desc");
 };
 

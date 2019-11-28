@@ -108,7 +108,7 @@ describe("app", () => {
       });
     });
     describe("/articles", () => {
-      describe.only("GET", () => {
+      describe("GET", () => {
         it("status:200 return array of all articles with comment_count column added", () => {
           return request(app)
             .get("/api/articles")
@@ -329,6 +329,22 @@ describe("app", () => {
                 .expect(200)
                 .then(({ body: { comments } }) => {
                   expect(comments).to.be.ascendingBy("created_at");
+                });
+            });
+            it("accepts limit query", () => {
+              return request(app)
+                .get("/api/articles/1/comments?limit=5")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments.length).to.eql(5);
+                });
+            });
+            it("accepts p query with limit", () => {
+              return request(app)
+                .get("/api/articles/1/comments?limit=5&&p=3")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments.length).to.eql(3);
                 });
             });
           });
