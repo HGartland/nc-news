@@ -66,8 +66,8 @@ describe("app", () => {
       });
     });
     describe("/articles", () => {
-      describe("GET", () => {
-        it("status:200 return array of all articles", () => {
+      describe.only("GET", () => {
+        it("status:200 return array of all articles with comment_count column added", () => {
           return request(app)
             .get("/api/articles")
             .expect(200)
@@ -82,6 +82,14 @@ describe("app", () => {
                 "created_at"
               ]);
               expect(articles.length).to.eql(12);
+            });
+        });
+        it("sorts by date(created_at), descending by default", () => {
+          return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles).to.be.descendingBy("created_at");
             });
         });
       });
@@ -170,7 +178,7 @@ describe("app", () => {
           });
         });
         describe("/comments", () => {
-          describe.only("GET", () => {
+          describe("GET", () => {
             it("status:200 with array length equal to comments for article", () => {
               return request(app)
                 .get("/api/articles/1/comments")

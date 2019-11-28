@@ -39,6 +39,9 @@ exports.updateArticle = ({ article_id }, updated_article) => {
     });
 };
 
-exports.fetchAllArticles = () => {
-  return connection.select("*").from("articles");
+exports.fetchAllArticles = ({ sort_by, order }) => {
+  return connection
+    .select("*")
+    .from("articles")
+    .orderBy(sort_by || "created_at", order || "desc");
 };
