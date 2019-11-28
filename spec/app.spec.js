@@ -166,6 +166,14 @@ describe("app", () => {
               expect(articles.length).to.eql(5);
             });
         });
+        it("accepts p query which affects response from limit", () => {
+          return request(app)
+            .get("/api/articles?limit=5&&p=3")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles.length).to.eql(2);
+            });
+        });
       });
       describe("INVALID METHODS", () => {
         it("status:405 on patch, put, delete", () => {
