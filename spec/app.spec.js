@@ -470,6 +470,20 @@ describe("app", () => {
         });
       });
     });
+    describe("INVALID METHODS", () => {
+      it("status:405 on post, patch, put, delete", () => {
+        const invalidMethods = ["post", "patch", "put", "delete"];
+        const methodPromises = invalidMethods.map(method => {
+          return request(app)
+            [method]("/api")
+            .expect(405)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal("method not allowed");
+            });
+        });
+        return Promise.all(methodPromises);
+      });
+    });
   });
   describe("invalid url", () => {
     it("status: 404 with msg: invalid url", () => {
