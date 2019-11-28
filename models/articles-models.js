@@ -41,11 +41,21 @@ exports.updateArticle = (article_id, votes) => {
 
 exports.fetchAllArticles = ({ sort_by, order, author, topic }) => {
   return connection
-    .select("*")
+    .select(
+      "articles.article_id",
+      "articles.author",
+      "articles.created_at",
+      "articles.title",
+      "articles.topic",
+      "articles.votes"
+    )
+    .count("comment_id AS comments_count")
     .from("articles")
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .groupBy("articles.article_id")
     .modify(query => {
-      if (author) query.where({ author });
-      if (topic) query.where({ topic });
+      if (author) query.where("articles.author", author);
+      if (topic) query.where("articles.topic", topic);
     })
     .orderBy(sort_by || "created_at", order || "desc");
 };
