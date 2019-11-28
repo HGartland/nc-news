@@ -26,7 +26,7 @@ describe("app", () => {
           });
       });
     });
-    describe.only("/topics", () => {
+    describe("/topics", () => {
       describe("GET", () => {
         it("status:200 with array of all rows in topics table", () => {
           return request(app)
@@ -49,7 +49,6 @@ describe("app", () => {
                 expect(msg).to.equal("method not allowed");
               });
           });
-          // methodPromises -> [ Promise { <pending> }, Promise { <pending> }, Promise { <pending> } ]
           return Promise.all(methodPromises);
         });
       });
@@ -130,6 +129,20 @@ describe("app", () => {
             .then(({ body: { articles } }) => {
               expect(articles.length).to.eql(1);
             });
+        });
+      });
+      describe("INVALID METHODS", () => {
+        it("status:405 on patch, put, delete", () => {
+          const invalidMethods = ["patch", "put", "delete"];
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/articles")
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal("method not allowed");
+              });
+          });
+          return Promise.all(methodPromises);
         });
       });
       describe("/:article_id", () => {

@@ -9,7 +9,12 @@ const {
   postComment
 } = require("../controllers/comments-controllers");
 
-articlesRouter.route("/").get(getAllArticles);
+const { handle405s } = require("../errors");
+
+articlesRouter
+  .route("/")
+  .get(getAllArticles)
+  .all(handle405s);
 
 articlesRouter
   .route("/:article_id/comments")
