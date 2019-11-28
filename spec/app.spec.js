@@ -207,6 +207,22 @@ describe("app", () => {
                   expect(comments).to.be.descendingBy("created_at");
                 });
             });
+            it("accepts sort_by query", () => {
+              return request(app)
+                .get("/api/articles/1/comments?sort_by=votes")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.descendingBy("votes");
+                });
+            });
+            it("accepts order query", () => {
+              return request(app)
+                .get("/api/articles/1/comments?order=asc")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.ascendingBy("created_at");
+                });
+            });
           });
           describe("POST", () => {
             it("status:201 new comment posted on success ", () => {
