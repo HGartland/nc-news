@@ -39,9 +39,13 @@ exports.updateArticle = ({ article_id }, updated_article) => {
     });
 };
 
-exports.fetchAllArticles = ({ sort_by, order }) => {
+exports.fetchAllArticles = ({ sort_by, order, author, topic }) => {
   return connection
     .select("*")
     .from("articles")
+    .modify(query => {
+      if (author) query.where({ author });
+      if (topic) query.where({ topic });
+    })
     .orderBy(sort_by || "created_at", order || "desc");
 };

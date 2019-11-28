@@ -92,6 +92,30 @@ describe("app", () => {
               expect(articles).to.be.descendingBy("created_at");
             });
         });
+        it("accepts queries order & sort_by ", () => {
+          return request(app)
+            .get("/api/articles?sort_by=topic&&order=asc")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles).to.be.ascendingBy("topic");
+            });
+        });
+        it("accepts author query as a filter", () => {
+          return request(app)
+            .get("/api/articles?author=rogersop")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles.length).to.eql(3);
+            });
+        });
+        it("accepts topic query as a filter", () => {
+          return request(app)
+            .get("/api/articles?topic=cats")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles.length).to.eql(1);
+            });
+        });
       });
       describe("/:article_id", () => {
         describe("GET", () => {
