@@ -108,7 +108,7 @@ describe("app", () => {
       });
     });
     describe("/articles", () => {
-      describe("GET", () => {
+      describe.only("GET", () => {
         it("status:200 return array of all articles with comment_count column added", () => {
           return request(app)
             .get("/api/articles")
@@ -156,6 +156,14 @@ describe("app", () => {
             .expect(200)
             .then(({ body: { articles } }) => {
               expect(articles.length).to.eql(1);
+            });
+        });
+        it("accepts limit query as filter", () => {
+          return request(app)
+            .get("/api/articles?limit=5")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles.length).to.eql(5);
             });
         });
       });
