@@ -16,14 +16,14 @@ describe("app", () => {
       it("status:200 with endpoints.json", () => {
         return request(app)
           .get("/api")
-          .expect(200)
-          // .then(({ body: { endpoints } }) => {
-          //   expect(endpoints).keys([
-          //     "GET /api",
-          //     "GET /api/topics",
-          //     "GET /api/articles"
-          //   ]);
-          // });
+          .expect(200);
+        // .then(({ body: { endpoints } }) => {
+        //   expect(endpoints).keys([
+        //     "GET /api",
+        //     "GET /api/topics",
+        //     "GET /api/articles"
+        //   ]);
+        // });
       });
     });
     describe("/topics", () => {
@@ -429,6 +429,15 @@ describe("app", () => {
                 expect(msg).to.eql("bad request");
               });
           });
+          it("status:400 when given a body that is not an object", () => {
+            return request(app)
+              .patch("/api/comments/1")
+              .expect(400)
+              .send("hello is it me you're looking for?")
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("bad request");
+              });
+          });
         });
         describe("DELETE", () => {
           it("status: 204 msg: successfully deleted", () => {
@@ -442,6 +451,14 @@ describe("app", () => {
               .expect(404)
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("data not found");
+              });
+          });
+          it("status:400 in invalid id", () => {
+            return request(app)
+              .delete("/api/comments/ten")
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.eql("bad request");
               });
           });
         });
