@@ -4,7 +4,8 @@ exports.fetchCommentsByArticle = ({ article_id }) => {
   return connection
     .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
-    .where("article_id", article_id);
+    .where("article_id", article_id)
+    .orderBy("created_at", "desc");
 };
 
 exports.insertComment = newComment => {

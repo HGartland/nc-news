@@ -13,7 +13,6 @@ exports.getCommentsByArticle = (req, res, next) => {
     checkArticleExists(req.params)
   ])
     .then(([comments, article]) => {
-      console.log(comments);
       res.status(200).send({ comments });
     })
     .catch(next);

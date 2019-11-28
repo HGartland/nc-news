@@ -199,6 +199,14 @@ describe("app", () => {
                 .get("/api/articles/7/comments")
                 .expect(200);
             });
+            it("default sorted by asc: created_at", () => {
+              return request(app)
+                .get("/api/articles/1/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).to.be.descendingBy("created_at");
+                });
+            });
           });
           describe("POST", () => {
             it("status:201 new comment posted on success ", () => {
