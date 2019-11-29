@@ -11,6 +11,11 @@ exports.up = function(knex) {
       articlesTable.timestamp("created_at").defaultTo(knex.fn.now());
     })
     .then(() => {
+      return knex.schema.alterTable("articles", function(table) {
+        table.unique(["title", "topic"]);
+      });
+    })
+    .then(() => {
       return knex.schema.createTable("comments", commentsTable => {
         commentsTable.increments("comment_id").primary();
         commentsTable

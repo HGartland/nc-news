@@ -190,7 +190,7 @@ describe("app", () => {
               expect(article.title).to.eql("ahoy");
             });
         });
-        it('status: 422 on non matching author', () => {
+        it("status: 422 on non matching author", () => {
           return request(app)
             .post("/api/articles")
             .expect(422)
@@ -202,6 +202,34 @@ describe("app", () => {
             })
             .then(({ body: { msg } }) => {
               expect(msg).to.eql("unprocessable entry");
+            });
+        });
+        it("status: 422 on non matching topic", () => {
+          return request(app)
+            .post("/api/articles")
+            .expect(422)
+            .send({
+              title: "ahoy",
+              topic: "soup",
+              author: "rogersop",
+              body: "I have a cat called Rasputin"
+            })
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("unprocessable entry");
+            });
+        });
+        it("status: 400 if article exists on that topic", () => {
+          return request(app)
+            .post("/api/articles")
+            .expect(400)
+            .send({
+              title: "A",
+              topic: "mitch",
+              author: "rogersop",
+              body: "I have a cat called Rasputin"
+            })
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("bad request");
             });
         });
       });
