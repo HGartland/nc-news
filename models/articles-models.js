@@ -1,10 +1,10 @@
 const connection = require("../db/connection");
 
-exports.checkArticleExists = article_id => {
+exports.checkArticleExists = ({ article_id }) => {
   return connection
     .select("*")
     .from("articles")
-    .where(article_id)
+    .where({ article_id })
     .then(articles => {
       return !articles.length
         ? Promise.reject({ code: 404, msg: "data not found" })
@@ -27,10 +27,10 @@ exports.fetchArticle = ({ article_id }) => {
     });
 };
 
-exports.updateArticle = (article_id, votes) => {
+exports.updateArticle = (article_id, { inc_votes }) => {
   return connection("articles")
     .where(article_id)
-    .increment(votes)
+    .increment("votes", inc_votes || 0)
     .returning("*")
     .then(article => {
       return article.length === 0
@@ -59,7 +59,12 @@ exports.fetchAllArticles = ({ sort_by, order, author, topic, limit, p }) => {
       if (limit) query.limit(limit);
       if (limit && p) query.offset((p - 1) * limit);
     })
-    .orderBy(sort_by || "created_at", order || "desc");
+    .orderBy(sort_by || "created_at", order || "desc")
+    .then(articles => {
+      return articles.length === 0
+        ? Promise.reject({ code: 404, msg: "data not found" })
+        : articles;
+    });
 };
 
 exports.insertArticle = newArticle => {

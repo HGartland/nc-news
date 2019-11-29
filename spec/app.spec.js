@@ -109,7 +109,7 @@ describe("app", () => {
     });
     describe("/articles", () => {
       describe("GET", () => {
-        it("status:200 return array of all articles with comment_count column added", () => {
+        it("status:200 return array of all articles with comments_count column added", () => {
           return request(app)
             .get("/api/articles")
             .expect(200)
@@ -156,6 +156,14 @@ describe("app", () => {
             .expect(200)
             .then(({ body: { articles } }) => {
               expect(articles.length).to.eql(1);
+            });
+        });
+        it("status: 404 if topic query does not exist", () => {
+          return request(app)
+            .get("/api/articles?topic=bananas")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("data not found");
             });
         });
         it("accepts limit query as filter", () => {
@@ -317,8 +325,8 @@ describe("app", () => {
               .patch("/api/articles/1")
               .expect(200)
               .send({ inc_votes: 5 })
-              .then(({ body: { updated_article } }) => {
-                expect(updated_article.votes).to.eql(105);
+              .then(({ body: { article } }) => {
+                expect(article.votes).to.eql(105);
               });
           });
           it("status: 404 data not found for non matching id", () => {
@@ -349,11 +357,16 @@ describe("app", () => {
               });
           });
         });
-        describe.only("DELETE", () => {
+        describe("DELETE", () => {
           it("status:204 on success", () => {
             return request(app)
               .delete("/api/articles/1")
               .expect(204);
+          });
+          it("status: 404 on no matching article_id", () => {
+            return request(app)
+              .delete("/api/articles/50000")
+              .expect(404);
           });
         });
         describe("INVALID METHODS", () => {
@@ -541,24 +554,6 @@ describe("app", () => {
               .patch("/api/comments/1")
               .expect(400)
               .send({ inc_votes: "four" })
-              .then(({ body: { msg } }) => {
-                expect(msg).to.eql("bad request");
-              });
-          });
-          it("status: 400 for missing column", () => {
-            return request(app)
-              .patch("/api/comments/1")
-              .expect(400)
-              .send({ votes: 4 })
-              .then(({ body: { msg } }) => {
-                expect(msg).to.eql("bad request");
-              });
-          });
-          it("status:400 when given a body that is not an object", () => {
-            return request(app)
-              .patch("/api/comments/1")
-              .expect(400)
-              .send("hello is it me you're looking for?")
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("bad request");
               });

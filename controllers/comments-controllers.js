@@ -25,17 +25,16 @@ exports.postComment = (req, res, next) => {
     article_id: req.params.article_id
   };
   insertComment(newComment)
-    .then(comment => {
-      res.status(201).send({ comment: comment[0] });
+    .then(([comment]) => {
+      res.status(201).send({ comment });
     })
     .catch(next);
 };
 
 exports.patchComment = (req, res, next) => {
-  const incVotes = req.body.inc_votes;
-  updateComment(req.params, { votes: incVotes })
-    .then(comment => {
-      res.status(200).send({ comment: comment[0] });
+  updateComment(req.params, req.body)
+    .then(([comment]) => {
+      res.status(200).send({ comment });
     })
     .catch(next);
 };

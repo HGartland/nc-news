@@ -6,26 +6,27 @@ const {
   killArticle
 } = require("../models/articles-models");
 
+const { checkTopicExists } = require("../models/topics-models");
+
 exports.getArticle = (req, res, next) => {
   fetchArticle(req.params)
-    .then(article => {
-      res.status(200).send({ article: article[0] });
+    .then(([article]) => {
+      res.status(200).send({ article });
     })
     .catch(next);
 };
 
 exports.patchArticle = (req, res, next) => {
-  const incVotes = req.body.inc_votes;
-  updateArticle(req.params, { votes: incVotes })
-    .then(updated_article => {
-      res.status(200).send({ updated_article: updated_article[0] });
+  updateArticle(req.params, req.body)
+    .then(([article]) => {
+      res.status(200).send({ article });
     })
     .catch(next);
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles(req.query)
-    .then(articles => {
+  return Promise.all([fetchAllArticles(req.query), checkTopicExists(req.query)])
+    .then(([articles]) => {
       res.status(200).send({ articles });
     })
     .catch(next);
@@ -33,8 +34,8 @@ exports.getAllArticles = (req, res, next) => {
 
 exports.postArticle = (req, res, next) => {
   insertArticle(req.body)
-    .then(article => {
-      res.status(200).send({ article: article[0] });
+    .then(([article]) => {
+      res.status(200).send({ article });
     })
     .catch(next);
 };

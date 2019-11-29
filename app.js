@@ -8,19 +8,18 @@ const {
   handle422s,
   handle400s
 } = require("./errors");
+
 // -----ROUTES
 app.use("/api", apiRouter);
+// -----INVALID URL
+app.all("/*", (req, res, next) => {
+  res.status(404).send({ msg: "invalid url" });
+});
 
 // -----ERROR CATCHERS
 app.use(handle400s);
 app.use(handle422s);
 app.use(handleCustom);
 app.use(handle500s);
-
-// -----INVALID URL
-app.all("/*", (req, res, next) => {
-  // console.log(req.url, "<-------------URL INVALID");
-  res.status(404).send({ msg: "invalid url" });
-});
 
 module.exports = app;
