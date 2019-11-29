@@ -175,7 +175,7 @@ describe("app", () => {
             });
         });
       });
-      describe.only("POST", () => {
+      describe("POST", () => {
         it("status:200 and responds with added article", () => {
           return request(app)
             .post("/api/articles")
@@ -232,19 +232,19 @@ describe("app", () => {
               expect(msg).to.eql("bad request");
             });
         });
-        it("status: 400 on missing column",()=>{
+        it("status: 400 on missing column", () => {
           return request(app)
             .post("/api/articles")
             .expect(400)
             .send({
               title: "ahoy",
               topic: "cats",
-              author: "rogersop",
+              author: "rogersop"
             })
             .then(({ body: { msg } }) => {
               expect(msg).to.eql("bad request");
             });
-        })
+        });
         it("status: 400 on extra column", () => {
           return request(app)
             .post("/api/articles")
@@ -254,12 +254,12 @@ describe("app", () => {
               topic: "cats",
               author: "rogersop",
               body: "I have a cat called Rasputin",
-              reason: 'I just wanted one'
+              reason: "I just wanted one"
             })
             .then(({ body: { msg } }) => {
               expect(msg).to.eql("bad request");
             });
-        })
+        });
       });
       describe("INVALID METHODS", () => {
         it("status:405 on patch, put, delete", () => {
@@ -347,6 +347,13 @@ describe("app", () => {
               .then(({ body: { msg } }) => {
                 expect(msg).to.eql("bad request");
               });
+          });
+        });
+        describe.only("DELETE", () => {
+          it("status:204 on success", () => {
+            return request(app)
+              .delete("/api/articles/1")
+              .expect(204);
           });
         });
         describe("INVALID METHODS", () => {

@@ -67,3 +67,14 @@ exports.insertArticle = newArticle => {
     .insert(newArticle)
     .returning("*");
 };
+
+exports.killArticle = ({ article_id }) => {
+  return connection("articles")
+    .where({ article_id })
+    .del()
+    .then(deleted => {
+      return deleted === 0
+        ? Promise.reject({ code: 404, msg: "data not found" })
+        : deleted;
+    });
+};

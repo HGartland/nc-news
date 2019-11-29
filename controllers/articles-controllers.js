@@ -2,7 +2,8 @@ const {
   fetchArticle,
   updateArticle,
   fetchAllArticles,
-  insertArticle
+  insertArticle,
+  killArticle
 } = require("../models/articles-models");
 
 exports.getArticle = (req, res, next) => {
@@ -34,6 +35,14 @@ exports.postArticle = (req, res, next) => {
   insertArticle(req.body)
     .then(article => {
       res.status(200).send({ article: article[0] });
+    })
+    .catch(next);
+};
+
+exports.deleteArticle = (req, res, next) => {
+  killArticle(req.params)
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(next);
 };
