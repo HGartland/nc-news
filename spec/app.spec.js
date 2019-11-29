@@ -232,6 +232,34 @@ describe("app", () => {
               expect(msg).to.eql("bad request");
             });
         });
+        it("status: 400 on missing column",()=>{
+          return request(app)
+            .post("/api/articles")
+            .expect(400)
+            .send({
+              title: "ahoy",
+              topic: "cats",
+              author: "rogersop",
+            })
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("bad request");
+            });
+        })
+        it("status: 400 on extra column", () => {
+          return request(app)
+            .post("/api/articles")
+            .expect(400)
+            .send({
+              title: "ahoy",
+              topic: "cats",
+              author: "rogersop",
+              body: "I have a cat called Rasputin",
+              reason: 'I just wanted one'
+            })
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("bad request");
+            });
+        })
       });
       describe("INVALID METHODS", () => {
         it("status:405 on patch, put, delete", () => {
