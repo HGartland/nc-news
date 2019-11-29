@@ -19,7 +19,7 @@ app.use(handle500s);
 
 // -----INVALID URL
 app.all("/*", (req, res, next) => {
-  console.log(req.url, "<-------------URL INVALID");
+  // console.log(req.url, "<-------------URL INVALID");
   res.status(404).send({ msg: "invalid url" });
 });
 
