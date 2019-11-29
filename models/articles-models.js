@@ -61,3 +61,9 @@ exports.fetchAllArticles = ({ sort_by, order, author, topic, limit, p }) => {
     })
     .orderBy(sort_by || "created_at", order || "desc");
 };
+
+exports.insertArticle = newArticle => {
+  return connection("articles")
+    .insert(newArticle)
+    .returning("*");
+};

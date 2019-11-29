@@ -175,6 +175,36 @@ describe("app", () => {
             });
         });
       });
+      describe.only("POST", () => {
+        it("status:200 and responds with added article", () => {
+          return request(app)
+            .post("/api/articles")
+            .expect(200)
+            .send({
+              title: "ahoy",
+              topic: "cats",
+              author: "rogersop",
+              body: "I have a cat called Rasputin"
+            })
+            .then(({ body: { article } }) => {
+              expect(article.title).to.eql("ahoy");
+            });
+        });
+        it('status: 422 on non matching author', () => {
+          return request(app)
+            .post("/api/articles")
+            .expect(422)
+            .send({
+              title: "ahoy",
+              topic: "cats",
+              author: "bananas",
+              body: "I have a cat called Rasputin"
+            })
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("unprocessable entry");
+            });
+        });
+      });
       describe("INVALID METHODS", () => {
         it("status:405 on patch, put, delete", () => {
           const invalidMethods = ["patch", "put", "delete"];
