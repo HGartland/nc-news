@@ -150,6 +150,14 @@ describe("app", () => {
               expect(articles.length).to.eql(3);
             });
         });
+        it("status: 404 if author does not exist", () => {
+          return request(app)
+            .get("/api/articles?author=bananas")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.eql("data not found");
+            });
+        });
         it("accepts topic query as a filter", () => {
           return request(app)
             .get("/api/articles?topic=cats")

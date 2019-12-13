@@ -39,7 +39,15 @@ exports.updateArticle = (article_id, { inc_votes }) => {
     });
 };
 
-exports.fetchAllArticles = ({ sort_by, order, author, topic, limit, p }) => {
+exports.fetchAllArticles = ({
+  sort_by,
+  order,
+  author,
+  topic,
+  limit,
+  p,
+  article_id
+}) => {
   return connection
     .select(
       "articles.article_id",
@@ -58,6 +66,7 @@ exports.fetchAllArticles = ({ sort_by, order, author, topic, limit, p }) => {
       if (topic) query.where("articles.topic", topic);
       if (limit) query.limit(limit);
       if (limit && p) query.offset((p - 1) * limit);
+      if (article_id) query.where("articles.article_id", article_id);
     })
     .orderBy(sort_by || "created_at", order || "desc")
     .then(articles => {
