@@ -25,9 +25,14 @@ exports.patchArticle = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  return Promise.all([fetchAllArticles(req.query), checkTopicExists(req.query)])
-    .then(([articles]) => {
-      res.status(200).send({ articles });
+  const { topic, author, article_id } = req.query;
+  return Promise.all([
+    fetchAllArticles(req.query),
+    checkTopicExists(req.query),
+    fetchAllArticles({ topic, author, article_id })
+  ])
+    .then(([articles, exists, allArticles]) => {
+      res.status(200).send({ articles, total: allArticles.length });
     })
     .catch(next);
 };
